@@ -1,0 +1,35 @@
+# contain image or contain service
+
+version: "3.9"
+name: ecommerce-api
+services:
+  # db:
+  #   image: postgres:14.3-alpine
+  #   restart: always
+  #   environment:
+  #     POSTGRES_USER: sbs
+  #     POSTGRES_PASSWORD: 123
+  #     POSTGRES_DB: sbs_db
+  #   ports:
+  #     - "5438:5438"
+  #   command: -p 5438
+  #   networks:
+  #     - sbs-network
+  app:
+    container_name: ecommerce-app-backend
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    env_file: ./.env
+    ports:
+      - "${PORT}:${PORT}" 
+    # depends_on:
+    #   - db
+    command: npm start
+    networks:
+      - ecommerce-network
+networks:
+  ecommerce-network:
+    driver: bridge
